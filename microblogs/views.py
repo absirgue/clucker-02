@@ -9,6 +9,7 @@ from .forms import LogInForm, PostForm, SignUpForm
 from .models import Post, User
 
 
+@login_required
 def feed(request):
     form = PostForm()
     return render(request, 'feed.html', {'form': form})
@@ -53,6 +54,7 @@ def sign_up(request):
     return render(request, 'sign_up.html', {'form': form})
 
 
+@login_required
 def show_user(request, user_id):
     try:
         user = User.objects.get(id=user_id)
