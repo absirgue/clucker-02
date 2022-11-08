@@ -7,12 +7,13 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
 from .forms import LogInForm, PostForm, SignUpForm
 from .models import Post, User
+from django.conf import settings
 
 
 def login_prohibited(view_function):
     def modified_view_function(request):
         if request.user.is_authenticated:
-            return redirect('feed')
+            return redirect(settings.REDIRECT_URL_WHEN_LOGGED_IN)
         else:
             return view_function(request)
             # execute
@@ -49,10 +50,12 @@ def log_out(request):
     return redirect('home')
 
 
+@login_prohibited
 def home(request):
     return render(request, 'home.html')
 
 
+@login_prohibited
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -69,10 +72,11 @@ def sign_up(request):
 def show_user(request, user_id):
     try:
         user = User.objects.get(id=user_id)
+        posts = Post.objects.filter(author=user)
     except ObjectDoesNotExist:
         return redirect('user_list')
     else:
-        return render(request, 'show_user.html', {'user': user})
+        return render(request, 'show_user.html', {'user': user, 'posts': posts})
 
 
 @login_required
