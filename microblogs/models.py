@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from libgravatar import Gravatar
 
+
 class User(AbstractUser):
     """User model used for authentication and microblog authoring."""
 
@@ -19,7 +20,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    bio = models.CharField(max_length=520, blank=True)
+    balance = models.IntegerField(blank=False, default=0)
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -33,6 +34,18 @@ class User(AbstractUser):
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
+
+    def toggle_follow(self, followee):
+        pass
+
+    def is_following(self, user):
+        return False
+
+    def follower_count(self):
+        return 0
+
+    def followees_count(self):
+        return 0
 
 
 class Post(models.Model):
