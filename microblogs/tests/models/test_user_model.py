@@ -133,6 +133,35 @@ class UserModelTestCase(TestCase):
         self.user.bio = 'x' * 521
         self._assert_user_is_invalid()
 
+    def test_toggle_follow_user(self):
+        jane = User.objects.get(username='@janedoe')
+        self.assertFalse(self.user.is_following(jane))
+        self.assertFalse(jane.is_following(self.user))
+        self.user.toggle_follow(jane)
+        self.assertTrue(self.user.is_following(jane))
+        self.assertFalse(jane.is_following(self.user))
+        self.user.toggle_follow(jane)
+        self.assertFalse(self.user.is_following(jane))
+        self.assertFalse(jane.is_following(self.user))
+
+    def test_follow_counters(self):
+        jane = User.objects.get(username='@janedoe')
+        patrick = User.objects.get(username='@patdoe')
+        patricia = User.objects.get(username='@patridoe')
+        self.user.toggle_follow(jane)
+        self.user.toggle_follow(patricia)
+        self.user.toggle_follow(patrick)
+        jane.toggle_follow(patrick)
+        jane.toggle_follow(patricia)
+        self.assertEqual(self.user.follower_count(), 0)
+        self.assertEqual(self.user.followee_count(), 3)
+        self.assertEqual(jane.follower_count(), 1)
+        self.assertEqual(jane.followee_count(), 2)
+        self.assertEqual(patricia.follower_count(), 2)
+        self.assertEqual(patricia.followee_count(), 0)
+        self.assertEqual(patrick.follower_count(), 2)
+        self.assertEqual(patrick.followee_count(), 0)
+
     def _assert_user_is_valid(self):
         try:
             self.user.full_clean()

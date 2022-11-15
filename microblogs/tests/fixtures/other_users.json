@@ -11,5 +11,31 @@
             "password": "pbkdf2_sha256$260000$bPg4tZyMdz6KcfXqYPodtj$r3LZAnEhDAZd5leDiezUxy6CH25JFCFQkO+3kX4ejcg=",
             "is_active": true
         }
+    },
+    {
+        "model": "microblogs.user",
+        "pk": 3,
+        "fields": {
+            "first_name": "Patrick",
+            "last_name": "Doe",
+            "username": "@patdoe",
+            "email": "patdoe@email.com",
+            "bio": "Hello, I'm Pat Doe.",
+            "password": "pbkdf2_sha256$260000$bPg4tZyMdz6KcfXqYPodtj$r3LZAnEhDAZd5leDiezUxy6CH25JFCFQkO+3kX4ejcg=",
+            "is_active": true
+        }
+    },
+    {
+        "model": "microblogs.user",
+        "pk": 4,
+        "fields": {
+            "first_name": "Patricia",
+            "last_name": "Doe",
+            "username": "@patridoe",
+            "email": "patridoe@email.com",
+            "bio": "Hello, I'm Patri Doe.",
+            "password": "pbkdf2_sha256$260000$bPg4tZyMdz6KcfXqYPodtj$r3LZAnEhDAZd5leDiezUxy6CH25JFCFQkO+3kX4ejcg=",
+            "is_active": true
+        }
     }
 ]

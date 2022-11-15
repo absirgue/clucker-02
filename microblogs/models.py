@@ -20,7 +20,9 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    balance = models.IntegerField(blank=False, default=0)
+    bio = models.CharField(max_length=520, blank=True)
+    followers = models.ManyToManyField(
+        'self', symmetrical=False, related_name='followees')
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -35,17 +37,26 @@ class User(AbstractUser):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
 
-    def toggle_follow(self, followee):
-        pass
-
     def is_following(self, user):
-        return False
+        return user in self.followees.all()
+
+    def toggle_follow(self, user):
+        if (self.is_following(user)):
+            self.unfollow(user)
+        else:
+            self.follow(user)
+
+    def follow(self, user):
+        user.followers.add(self)
+
+    def unfollow(self, user):
+        user.followers.remove(self)
 
     def follower_count(self):
-        return 0
+        return self.followers.count()
 
-    def followees_count(self):
-        return 0
+    def followee_count(self):
+        return self.followees.count()
 
 
 class Post(models.Model):

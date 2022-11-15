@@ -100,3 +100,7 @@ def new_post(request):
             return redirect('log_in')
     else:
         return HttpResponseForbidden()
+
+
+def follow_toggle(request):
+    return redirect('feed')
