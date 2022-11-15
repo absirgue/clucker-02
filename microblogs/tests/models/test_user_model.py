@@ -182,3 +182,8 @@ class UserModelTestCase(TestCase):
             bio="This is Jane's profile."
         )
         return user
+
+    def test_user_cannot_follow_self(self):
+        self.user.toggle_follow(self.user)
+        self.assertEqual(self.user.follower_count(), 0)
+        self.assertEqual(self.user.followee_count(), 0)

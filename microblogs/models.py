@@ -41,6 +41,8 @@ class User(AbstractUser):
         return user in self.followees.all()
 
     def toggle_follow(self, user):
+        if user == self:
+            return
         if (self.is_following(user)):
             self.unfollow(user)
         else:
